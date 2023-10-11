@@ -5,6 +5,7 @@ import(
 
 type RouterModel struct{
   activeController int
+  installSettings Settings
 }
 
 func New() RouterModel{
