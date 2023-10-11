@@ -1,11 +1,12 @@
 package router
 import(
   tea "github.com/charmbracelet/bubbletea"
+  "github.com/timothycates/arch-install-tui/internal/models/installOptions"
 )
 
 type RouterModel struct{
   activeController int
-  installSettings Settings
+  options installOptions.Options
 }
 
 func New() RouterModel{

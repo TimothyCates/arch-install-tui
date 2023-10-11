@@ -1,4 +1,4 @@
-module github.com/timothycates/Arch-Install-TUI
+module github.com/timothycates/arch-install-tui
 
 go 1.21.2
 

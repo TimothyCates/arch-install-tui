@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"github.com/timothycates/Arch-Install-TUI/router"
+	"github.com/timothycates/arch-install-tui/internal/router"
 	tea "github.com/charmbracelet/bubbletea"
 )
 func main(){
