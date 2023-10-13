@@ -1,22 +1,19 @@
 package controllers
-import(
-  "github.com/timothycates/arch-install-tui/internal/models/menu"
-  "github.com/timothycates/arch-install-tui/internal/views"
+
+import (
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/timothycates/arch-install-tui/internal/models/menu"
+	"github.com/timothycates/arch-install-tui/internal/views"
 )
-type mainMenu struct{
-  Update func()
-  View func() string
-}
-
-
 
 var model = menu.New([]string{"start", "exit"}, views.CenteredMenu)
-var MainMenu mainMenu = mainMenu{
+var MainMenu Controller = Controller{
 
-  Update: func(){
-    
+  Update: func(msg tea.Msg) (tea.Model, tea.Cmd){
+    return model, nil 
   },
+
   View: func() string{
-   return model.View()
+    return model.View()
   },
 }
