@@ -1,6 +1,6 @@
 package router
 import(
-  controllers "github.com/timothycates/arch-install-tui/internal/controllers"
+  ctrls "github.com/timothycates/arch-install-tui/internal/controllers"
   tea "github.com/charmbracelet/bubbletea"
   "github.com/timothycates/arch-install-tui/internal/models/installOptions"
 )
@@ -8,10 +8,15 @@ import(
 type RouterModel struct{
   activeController int
   options installOptions.Options
+  controllers *OrderedMap
 }
 
 func New() RouterModel{
-  return RouterModel{}
+  var r RouterModel = RouterModel{
+    controllers: NewOrderedMap(),
+  }
+  r.controllers.Add("MainMenu", ctrls.MainMenu)
+  return r
 }
 
 func (r RouterModel) Update(msg tea.Msg) (tea.Model, tea.Cmd){
@@ -22,16 +27,32 @@ func (r RouterModel) Update(msg tea.Msg) (tea.Model, tea.Cmd){
       return r, tea.Quit
     }
   }
+  _, ctrlValue, error := r.controllers.GetByIndex(r.activeController)
+  if error != nil{
+    return r, nil
+  }
+
+  controller, ok := ctrlValue.(ctrls.Controller)
+  if !ok{
+    return r, nil
+  }
+
+  controller.Update(msg)
+
   return r, nil
 }
 
 func (r RouterModel) View() string{
-  switch(r.activeController){
-  case 0:
-    return controllers.MainMenu.View()
-  default:
-    return "none"
+  _, ctrlValue, error := r.controllers.GetByIndex(r.activeController)
+  if error != nil {
+    return "activeView set to impossible state"
   }
+  controller, ok := ctrlValue.(ctrls.Controller)
+  if !ok{
+    return ""
+  }
+
+  return controller.View()
 }
 
 func (r RouterModel) Init() tea.Cmd{
