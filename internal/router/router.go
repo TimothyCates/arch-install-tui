@@ -11,6 +11,14 @@ type RouterModel struct{
   controllers *OrderedMap
 }
 
+func (r RouterModel)  setController(controller string){
+  ctrlerIndex, error := r.controllers.GetIndex(controller)
+  if error != nil{
+    return
+  }
+  r.activeController = ctrlerIndex
+}
+
 func New() RouterModel{
   var r RouterModel = RouterModel{
     controllers: NewOrderedMap(),
