@@ -1,5 +1,6 @@
 package router
 import(
+  controllers "github.com/timothycates/arch-install-tui/internal/controllers"
   tea "github.com/charmbracelet/bubbletea"
   "github.com/timothycates/arch-install-tui/internal/models/installOptions"
 )
@@ -25,7 +26,12 @@ func (r RouterModel) Update(msg tea.Msg) (tea.Model, tea.Cmd){
 }
 
 func (r RouterModel) View() string{
-  return "Router"
+  switch(r.activeController){
+  case 0:
+    return controllers.MainMenu.View()
+  default:
+    return "none"
+  }
 }
 
 func (r RouterModel) Init() tea.Cmd{
