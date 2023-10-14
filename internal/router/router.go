@@ -11,7 +11,7 @@ type RouterModel struct{
   controllers *OrderedMap
 }
 
-func (r RouterModel)  setController(controller string){
+func (r *RouterModel) setController(controller string){
   ctrlerIndex, error := r.controllers.GetIndex(controller)
   if error != nil{
     return

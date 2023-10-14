@@ -6,14 +6,29 @@ import (
 	"github.com/timothycates/arch-install-tui/internal/views"
 )
 
-var model = menu.New([]string{"start", "exit"}, views.CenteredMenu)
-var MainMenu Controller = Controller{
+type MainMenu struct{
+  model tea.Model
+  ChangeView func(string)
+}
 
-  Update: func(msg tea.Msg) (tea.Model, tea.Cmd){
-    return model, nil 
-  },
+func (m MainMenu) Update(msg tea.Msg) (tea.Model, tea.Cmd){
+  switch msg := msg.(type){
+  case tea.KeyMsg:
+    switch msg.String(){
+    }
+  }
+  return m.model, nil
+}
 
-  View: func() string{
-    return model.View()
-  },
+func (m MainMenu) View() string{
+  return m.model.View()
+}
+
+func NewMainMenu(routerCallback func(string)) (Controller){
+  var model = menu.New([]string{"Test1", "Exit"}, views.CenteredMenu)
+  var menu MainMenu = MainMenu{
+    model: model,
+    ChangeView: routerCallback,
+  }
+  return menu
 }
