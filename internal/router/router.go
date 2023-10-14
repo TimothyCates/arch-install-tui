@@ -1,14 +1,15 @@
 package router
-import(
-  ctrls "github.com/timothycates/arch-install-tui/internal/controllers"
-  tea "github.com/charmbracelet/bubbletea"
-  "github.com/timothycates/arch-install-tui/internal/models/installOptions"
-)
 
+import (
+	tea "github.com/charmbracelet/bubbletea"
+	ctrls "github.com/timothycates/arch-install-tui/internal/controllers"
+	"github.com/timothycates/arch-install-tui/internal/models/installOptions"
+	"github.com/timothycates/arch-install-tui/internal/utils"
+)
 type RouterModel struct{
   activeController int
   options installOptions.Options
-  controllers *OrderedMap
+  controllers *utils.OrderedMap
 }
 
 func (r *RouterModel) setController(controller string){
@@ -19,15 +20,15 @@ func (r *RouterModel) setController(controller string){
   r.activeController = ctrlerIndex
 }
 
-func New() RouterModel{
-  var r RouterModel = RouterModel{
-    controllers: NewOrderedMap(),
+func New() *RouterModel{
+  var r *RouterModel = &RouterModel{
+    controllers: utils.NewOrderedMap(),
   }
-  r.controllers.Add("MainMenu", ctrls.MainMenu)
+  r.controllers.Add("MainMenu", ctrls.NewMainMenu(r.setController))
   return r
 }
 
-func (r RouterModel) Update(msg tea.Msg) (tea.Model, tea.Cmd){
+func (r *RouterModel) Update(msg tea.Msg) (tea.Model, tea.Cmd){
   switch msg := msg.(type){
   case tea.KeyMsg:
     switch msg.String(){
@@ -44,7 +45,6 @@ func (r RouterModel) Update(msg tea.Msg) (tea.Model, tea.Cmd){
   if !ok{
     return r, nil
   }
-
   controller.Update(msg)
 
   return r, nil
